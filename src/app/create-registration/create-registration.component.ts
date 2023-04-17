@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ApiService } from '../services/api.service';
 import { NgToastService } from 'ng-angular-popup';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../models/user.model';
 
 @Component({
@@ -24,12 +24,14 @@ export class CreateRegistrationComponent implements OnInit {
 
   public registrationForm!: FormGroup;
   public userIdToUpadte!: number;
+  public isUpdateActive: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private api: ApiService,
     private toastService: NgToastService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -57,6 +59,7 @@ export class CreateRegistrationComponent implements OnInit {
     this.activatedRoute.params.subscribe((val) => {
       this.userIdToUpadte = val['id'];
       this.api.getRegisteredUserId(this.userIdToUpadte).subscribe((res) => {
+        this.isUpdateActive = true
         this.fillFormToUpdate(res);
       });
     });
@@ -70,6 +73,18 @@ export class CreateRegistrationComponent implements OnInit {
         duration: 3000,
       });
       this.registrationForm.reset();
+    });
+  }
+
+  update(){
+    this.api.updateRegisterUser(this.registrationForm.value, this.userIdToUpadte).subscribe((res) => {
+      this.toastService.success({
+        detail: 'Success',
+        summary: 'Enquiry Updated',
+        duration: 3000,
+      });
+      this.registrationForm.reset();
+      this.router.navigate(['list'])
     });
   }
 

@@ -49,8 +49,12 @@
       <div class="col-md-6">
         <mat-form-field appearance="outline">
           <mat-label>Height</mat-label>
-          <input [readonly]="!this.registrationForm.value?.weight"
-          formControlName="height" type="number" matInput placeholder="height"
+          <input
+            [readonly]="!this.registrationForm.value?.weight"
+            formControlName="height"
+            type="number"
+            matInput
+            placeholder="height"
           />
           <mat-icon matSuffix
             ><i class="fa fa-text-height" aria-hidden="true"></i
@@ -171,8 +175,23 @@
         </mat-form-field>
       </div>
     </div>
-    <button (click)="submit()" class="mt-4" mat-raised-button color="accent">
+    <button
+      *ngIf="!isUpdateActive"
+      (click)="submit()"
+      class="mt-4"
+      mat-raised-button
+      color="accent"
+    >
       Submit
+    </button>
+    <button
+      *ngIf="isUpdateActive"
+      (click)="update()"
+      class="mt-4"
+      mat-raised-button
+      color="accent"
+    >
+      Update
     </button>
   </form>
 </div>
