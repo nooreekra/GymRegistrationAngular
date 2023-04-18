@@ -31,7 +31,7 @@ export class CreateRegistrationComponent implements OnInit {
     private api: ApiService,
     private toastService: NgToastService,
     private activatedRoute: ActivatedRoute,
-    private router: Router,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -58,10 +58,17 @@ export class CreateRegistrationComponent implements OnInit {
 
     this.activatedRoute.params.subscribe((val) => {
       this.userIdToUpadte = val['id'];
-      this.api.getRegisteredUserId(this.userIdToUpadte).subscribe((res) => {
-        this.isUpdateActive = true
-        this.fillFormToUpdate(res);
-      });
+      if (this.userIdToUpadte) {
+        this.isUpdateActive = true;
+        this.api.getRegisteredUserId(this.userIdToUpadte).subscribe({
+          next: (res) => {
+            this.fillFormToUpdate(res);
+          },
+          error: (err) => {
+            console.log(err);
+          },
+        });
+      }
     });
   }
 
@@ -76,16 +83,18 @@ export class CreateRegistrationComponent implements OnInit {
     });
   }
 
-  update(){
-    this.api.updateRegisterUser(this.registrationForm.value, this.userIdToUpadte).subscribe((res) => {
-      this.toastService.success({
-        detail: 'Success',
-        summary: 'Enquiry Updated',
-        duration: 3000,
+  update() {
+    this.api
+      .updateRegisterUser(this.registrationForm.value, this.userIdToUpadte)
+      .subscribe((res) => {
+        this.toastService.success({
+          detail: 'Success',
+          summary: 'Enquiry Updated',
+          duration: 3000,
+        });
+        this.registrationForm.reset();
+        this.router.navigate(['list']);
       });
-      this.registrationForm.reset();
-      this.router.navigate(['list'])
-    });
   }
 
   calculateBMI(heightValue: number) {

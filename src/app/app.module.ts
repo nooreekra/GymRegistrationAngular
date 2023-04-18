@@ -24,6 +24,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatCardModule } from '@angular/material/card';
+import { MatListModule } from '@angular/material/list';
+import { MatChipsModule } from '@angular/material/chips';
 
 @NgModule({
   declarations: [
@@ -52,6 +54,8 @@ import { MatCardModule } from '@angular/material/card';
     MatPaginatorModule,
     MatSortModule,
     MatCardModule,
+    MatListModule,
+    MatChipsModule,
 
     NgToastModule,
     NgConfirmModule,
